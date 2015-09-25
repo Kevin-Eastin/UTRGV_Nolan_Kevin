@@ -9,9 +9,9 @@
 
 //Easter Date Calculator from the range of 1900 to 2099.
 
-#include<string>
-#include<iostream>
-#include<cstdlib>
+#include<string>    //To allow me to use string variables
+#include<iostream>  //for basic outputting
+#include<cstdlib> //included to use the exit() function to end the program at my leisure
 
 using namespace std;
 
@@ -20,22 +20,23 @@ const int MINIMUMYEAR = 1900;
 const int MAXIMUMYEAR = 2099;
 
 //function prototypes
-void DateCheck(int year);
-int EasterCalculate(int quearyYear);
-string MonthCheck(int easterDay);
+void DateCheck(int year);               //checks that the year given is valid (hindsight: unecessary)
+int EasterCalculate(int quearyYear);    //calculate the easterDAY
+string MonthCheck(int easterDay);       //use easterDAY to calculate easterMONTH
 
 
 //main function
 int main() {
     //call variables
-    int currentDay;
-    int currentMonth;
-    int currentYear; //
-    int quearyYear;  //
-    int easterDay;  //
+    int currentDay;    //inputed current day (only if current and monthNum are equal)
+    int currentMonth; //inputed current month (only if current and queary year are equal
+    int currentYear; //Inputed current year
+    int quearyYear;  //Inputed year of desired easterDay
+    int easterDay;  //calculated easterDay
+    int monthNum; //integer version of easterMonth
     
-    string easterMonth; //
-    string tense; //xxxxx/
+    string easterMonth; //given by MonthCheck function
+    string tense; //based on whether or not easter has happened yet
     
     
     //introduce the program the user.
@@ -57,57 +58,71 @@ int main() {
     //use easterDay to figure out easterMonth using function MonthCheck
     easterMonth = MonthCheck(easterDay);
     
+    
     //fix easterDay based on the Month, if march do nothing, if april subtract 31
     if (easterMonth == "April") {
         easterDay -= 31;
     }
-
-    //check to see if we need to add the month
-    if (quearyYear == currentYear) {
-        cout << "Please enter the current month as a number: ";
+    
+    
+    //Assign a value to monthNum based on easterMonth, 3 if march, 4 if april
+    //this simplifies later if's significantly.
+    if (easterMonth == "March") {
+        monthNum = 3;
+    }
+    else if (easterMonth == "April"){
+        monthNum = 4;
+    }
+    //redo all the checks to be more readable and coherent. Use a reasonable logic you dolt.
+    //first check the years, if equal ask for months.
+    if (currentYear < quearyYear) {
+        tense = "will be";
+    }
+    else if (currentYear > quearyYear) {
+        tense = "was";
+    }
+    else if (currentYear == quearyYear) {
+        cout << "Please enter the current month as a number (1-12 only): ";
         cin >> currentMonth;
     }
-    //check to see if we need to add the day
-    if ((currentMonth ==  3) && (easterMonth == "March")) {
-        cout << "Please enter the current day as a number: ";
-        cin >> currentDay;
+    //check that the month given is an acceptable figure. if it's not, SHUT IT DOWN
+    if (currentMonth > 12 || currentMonth < 1) {
+        cout << "GOSH DARN IT USER! FOLLOW THE DIRECTIONS!";
+        exit(EXIT_FAILURE);
     }
-    else if ((currentMonth == 4) && (easterMonth == "April")) {
-        cout << "Please enter the current day as a number; ";
+    //then check the months (if years equal of course) use monthNum and currentMonth! if equal ask for days
+    if (currentMonth > monthNum) {
+        tense = "was";
+    }
+    else if (currentMonth < monthNum) {
+        tense = "will be";
+    }
+    else if (currentMonth == monthNum) {
+        cout << "Please enter the current DAY as a number: ";
         cin >> currentDay;
     }
     
-    //check to see if the current day, matches the easter day, if it does, print special reminder
-    if (currentDay == easterDay) {
-        cout << "EASTER IS TODAY! GET A FEW EGGS AND GO CELEBRATE USER!";
+    //THEN check the days (if months are equal of course) use easterDay and currentDay, if equal print special message and quit the program (successfully)
+    if ((currentDay > easterDay) && (currentMonth == monthNum)) {
+        tense = "was";
+    }
+    else if ((currentDay < easterDay) && (currentMonth == monthNum)) {
+        tense = "will be";
+    }
+    else if (currentDay == easterDay) {
+        cout << "EASTER IS TODAY! GET OUT AND CELEBRATE WOOOOOOHOOOOOOOOO!!!!!!!!!!!" << endl << endl;
         exit(EXIT_SUCCESS);
     }
-    
-    //figure out the tense BASED ON THE YEAR
-    if (quearyYear < currentYear) {
-            tense = " was ";
-    }
-    else if (quearyYear > currentYear) {
-            tense = " will be ";
-    }
-    else if ((quearyYear == currentYear) && (currentMonth > 3 && easterMonth == "March")) {
-        tense = " will be ";
-    }
-    else if (quearyYear == currentYear) && (currentMonth )
-    
-    //IF THE YEARS WERE THE SAME, THEN CHECK THE MONTHS FOR THE TENSE
 
-    
-    //else if (quearyYear == currentYear) && (currentMonth >) FIXMEFIXMEFIXMEFIXME
-    
     //print out the inputs given
-    cout << "The current year is " << currentYear << ". The year you have selected to find the date of";
-    cout << " Easter is " << quearyYear << endl;
+    cout << endl << "The current year is " << currentYear << ". The year you have selected to find the date of";
+    cout << " Easter is " << quearyYear << endl << endl;
     
 
     
     //print out the answer line, proper tense, proper year, proper date.
-    cout << "Easter in the year " << currentYear << tense << " " << easterMonth << " " << easterDay;
+    cout << "Easter in the year " << quearyYear << " " << tense << " " << easterMonth << " " << easterDay;
+    cout << endl << endl;
 
     
     
@@ -163,3 +178,4 @@ string MonthCheck(int easterDay) {
         return easterMonth;
     }
 }
+
