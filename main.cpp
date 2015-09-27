@@ -53,10 +53,12 @@ int main() {
     cin >> quearyYear;
     DateCheck(quearyYear);
     
+    
     //calculate the easterDay using the function EasterCalculate
     easterDay = EasterCalculate(quearyYear);
     //use easterDay to figure out easterMonth using function MonthCheck
     easterMonth = MonthCheck(easterDay);
+    
     
     
     //fix easterDay based on the Month, if march do nothing, if april subtract 31
@@ -73,7 +75,8 @@ int main() {
     else if (easterMonth == "April"){
         monthNum = 4;
     }
-    //redo all the checks to be more readable and coherent. Use a reasonable logic you dolt.
+
+    
     //first check the years, if equal ask for months.
     if (currentYear < quearyYear) {
         tense = "will be";
@@ -86,10 +89,19 @@ int main() {
         cin >> currentMonth;
     }
     //check that the month given is an acceptable figure. if it's not, SHUT IT DOWN
-    if (currentMonth > 12 || currentMonth < 1) {
+    if ((currentYear == quearyYear) && ((currentMonth > 12) || (currentMonth < 1))) {
         cout << "GOSH DARN IT USER! FOLLOW THE DIRECTIONS!";
         exit(EXIT_FAILURE);
     }
+    
+    //THIS EXISTS ONLY AS A CLEVER SOLUTION TO TENSE PROBLEMS WITH POTENTIALLY NONEXISTANT VARIABLES
+    //CAUSING AN OVERRIDE IN TENSE
+    if (currentYear > quearyYear) {
+        currentMonth= 238;
+        currentDay = 234;
+    }
+    /////////////////////////////////////////////
+    
     //then check the months (if years equal of course) use monthNum and currentMonth! if equal ask for days
     if (currentMonth > monthNum) {
         tense = "was";
@@ -113,25 +125,28 @@ int main() {
         cout << "EASTER IS TODAY! GET OUT AND CELEBRATE WOOOOOOHOOOOOOOOO!!!!!!!!!!!" << endl << endl;
         exit(EXIT_SUCCESS);
     }
-
+    
     //print out the inputs given
     cout << endl << "The current year is " << currentYear << ". The year you have selected to find the date of";
     cout << " Easter is " << quearyYear << endl << endl;
     
-
+    
     
     //print out the answer line, proper tense, proper year, proper date.
     cout << "Easter in the year " << quearyYear << " " << tense << " " << easterMonth << " " << easterDay;
     cout << endl << endl;
-
+    
     
     
     //print out a goodbye message
+    cout << "Well, it's been a fun ride User, but it's time for me to go now. I hope you use this knowledge";
+    cout << " wisely. Get out there and celebrate easter safely. Goodbye";
+    
     
     return 0;
 }
 
-//function implementations
+//function implementations:
 
 //function to check that the given year is within the allowed range
 void DateCheck(int year) {
@@ -161,7 +176,7 @@ int EasterCalculate(int quearyYear) {
         return easterDay;
     }
     else {
-
+        
         return easterDay;
     }
 }
@@ -178,4 +193,3 @@ string MonthCheck(int easterDay) {
         return easterMonth;
     }
 }
-
